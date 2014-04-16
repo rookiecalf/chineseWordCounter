@@ -51,6 +51,14 @@ class  ChineseWordCountCommand(sublime_plugin.TextCommand):
         total_chars = 0
         sections = 0
         language = "plain text"
+
+        for region in selected:
+            (rwords, rchars, rsections, rtotal) = chinese_wordcount(self.view.substr(region))
+            words += rwords
+            chars += rchars
+            sections += rsections
+            total_chars += rtotal
+            
         sublime.message_dialog('''\
 Word count for %s
 
