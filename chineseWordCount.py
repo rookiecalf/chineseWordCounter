@@ -5,6 +5,7 @@ import re
 #For the unicode files
 def chinese_wordcount(text):
     words = 0
+    chinesewords = 0
     chars = 0
     sections = 1
     newlines = 0
@@ -17,6 +18,7 @@ def chinese_wordcount(text):
         if 0x2000 <= ord(textString[i]) <= 0xffff :
             words += 1
             chars += 1
+            chinesewords += 1
         #count the english chars and words
         if 0x20 <= ord(textString[i]) <= 0xff and ord(textString[i]) != 0x20 :
             chars += 1
@@ -36,7 +38,7 @@ def chinese_wordcount(text):
                 sections += 1
                 sectionsFlag = 0
 
-    return words, chars, sections, (len(textString) - newlines)
+    return words, chinesewords, chars, sections, (len(textString) - newlines)
 
 class  ChineseWordCountCommand(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -50,14 +52,16 @@ class  ChineseWordCountCommand(sublime_plugin.TextCommand):
             scope = "entire file"
 
         words = 0
+        chinesewords = 0
         chars = 0
         total_chars = 0
         sections = 0
         language = "plain text"
 
         for region in selected:
-            (rwords, rchars, rsections, rtotal) = chinese_wordcount(self.view.substr(region))
+            (rwords, rchinesewords, rchars, rsections, rtotal) = chinese_wordcount(self.view.substr(region))
             words += rwords
+            chinesewords += rchinesewords
             chars += rchars
             sections += rsections
             total_chars += rtotal
@@ -66,9 +70,9 @@ class  ChineseWordCountCommand(sublime_plugin.TextCommand):
 Word count for %s
 
 words:\t\t\t\t\t\t%d
+chinese words:\t\t\t\t\t%d
 Characters (ignoring whitespace):\t%d
 Characters (with whitespace):\t%d
 sections:\t\t\t\t\t\t%d
-Lines:\t\t\t\t\t\t%d
 
-%s''' % (scope, words, chars, total_chars, sections, lines, language))	
+%s''' % (scope, words, chinesewords, chars, total_chars, sections, language))	
