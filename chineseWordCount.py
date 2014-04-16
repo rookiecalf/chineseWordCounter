@@ -7,6 +7,7 @@ def chinese_wordcount(text):
     words = 0
     chars = 0
     sections = 1
+    newlines = 0
     charsFlag = 0
     sectionsFlag = 0
 
@@ -28,13 +29,14 @@ def chinese_wordcount(text):
                 charsFlag = 0
         #count the sections
         if ord(textString[i]) == 0x0A:
+            newlines += 1
             sectionsFlag = 1
         else:
             if sectionsFlag == 1:
                 sections += 1
                 sectionsFlag = 0
 
-    return words, chars, sections, len(textString)
+    return words, chars, sections, (len(textString) - newlines)
 
 class  ChineseWordCountCommand(sublime_plugin.TextCommand):
     def run(self, edit):
