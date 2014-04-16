@@ -36,20 +36,21 @@ def basic_wordcount(text):
     return words, chars, sections, len(textString)
 
 class  ChineseWordCountCommand(sublime_plugin.TextCommand):
-	scope = "selected region"
-	words = 0
-	chars = 0
-	total_chars = 0
-	sections = 0
-	lines = 0
-	language = "plain text"
-	sublime.message_dialog('''\
+	def run(self, edit):
+		scope = "selected region"
+		words = 0
+		chars = 0
+		total_chars = 0
+		sections = 0
+		lines = 0
+		language = "plain text"
+		sublime.message_dialog('''\
 Word count for %s
 
 words:\t\t\t\t\t\t%d
 Characters (ignoring whitespace):\t%d
 Characters (with whitespace):\t%d
-sections:\t\t\t\t\t%d
+sections:\t\t\t\t\t\t%d
 Lines:\t\t\t\t\t\t%d
 
 %s''' % (scope, words, chars, total_chars, sections, lines, language))
