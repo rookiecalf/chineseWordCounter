@@ -2,6 +2,7 @@ import sublime
 import sublime_plugin
 import re
 
+#For the unicode files
 def chinese_wordcount(text):
     words = 0
     chars = 0
@@ -12,7 +13,7 @@ def chinese_wordcount(text):
     textString = text
     for i in range(0,len(textString)):
     	#count the chinese words
-        if 0x4e00 <= ord(textString[i]) <= 0x9fa5 :
+        if 0x2000 <= ord(textString[i]) <= 0xffff :
             words += 1
             chars += 1
         #count the english chars and words
@@ -58,7 +59,7 @@ class  ChineseWordCountCommand(sublime_plugin.TextCommand):
             chars += rchars
             sections += rsections
             total_chars += rtotal
-            
+
         sublime.message_dialog('''\
 Word count for %s
 
